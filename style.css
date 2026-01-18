@@ -1,0 +1,214 @@
+/* ล็อกการเลื่อนหน้าจอและ overscroll */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  touch-action: none; /* ปิด gesture scroll บนมือถือ */
+  background: #000;
+  font-family: Arial, sans-serif;
+
+  overflow-x: auto; /* ปิด scroll แนวนอน */
+  overflow-y: auto; /* ✅ เลื่อนแนวตั้งได้ถ้าเนื้อหาเกินหน้าจอ */
+}
+
+.site-header {
+  position: relative;
+  background: linear-gradient(90deg, #32cd32, #9acd32); /* เขียวมะม่วง */
+  padding: 30px 0;
+  text-align: right;
+  overflow: hidden; /* กัน ::before ล้น */
+}
+
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("assets/images/PlayX.png") no-repeat center center;
+  background-size: 120px auto;
+  opacity: 0.5; /* ✅ ปรับความทึบเฉพาะรูป */
+  pointer-events: none; /* ไม่บังการคลิก */
+}
+
+
+.site-header ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: inline-flex;
+  gap: 20px;
+}
+
+.site-header a {
+  color: white;
+  text-shadow: 0 0 5px #fff,
+               0 0 10px #ff0,
+               0 0 20px #f0f,
+               0 0 30px #0ff;
+  font-family: 'Orbitron', 'Poppins', sans-serif;
+  font-size: 1.2rem;
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.2s ease;
+  margin-right: 20px;
+}
+
+.site-header a:hover {
+  color: yellow;
+  transform: scale(1.1);
+}
+
+
+/* จอเล็ก: ลดเฉพาะโลโก้ + ย่อตัวหนังสือ + เมนูแนวนอนชิดขวา */
+@media (max-width: 600px) { 
+  .site-header { 
+    text-align: center;          /* ✅ เน้นชิดขวา */
+    padding: 10px 20px;         /* ลด padding และเพิ่มระยะห่างจากขอบ */
+  } 
+
+  .site-header::before { 
+    background-size: 80px auto; /* ✅ ลดขนาดโลโก้เท่านั้น */
+    background-position: center; /* โลโก้ชิดบนตรงกลาง */
+  } 
+
+  .site-header ul {  
+    display: flex;              /* ✅ ใช้ flex แนวนอน */
+    flex-direction: row;        /* ✅ เรียงแนวนอน */
+    justify-content: flex-end;  /* ✅ ชิดขวาสุด */
+    gap: 10px;                  /* ระยะห่างระหว่างเมนู */
+    margin: 10px 0 0 0;         /* ขยับลงมาใต้โลโก้เล็กน้อย */
+    padding-right: 10px;        /* ✅ ห่างจากขอบขวาเล็กน้อย */
+    width: 100%;
+  }
+
+  .site-header a { 
+    margin-right: 0;            
+    font-size: 0.55rem;          /* ✅ ย่อตัวหนังสือ */
+  } 
+}
+
+
+
+canvas {
+  display: block;
+  margin: 0 auto;
+  background: #111;
+}
+
+/* Canvas wrapper */
+#gameCanvas {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ccc;
+}
+
+/* Control bar */
+.control-bar {
+  width: 480px;
+  max-width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  padding: 8px;
+  box-sizing: border-box;
+  background: #a8a6a6;
+}
+
+.control-bar button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  background: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
+
+.control-bar button:hover {
+  background: #0056b3;
+}
+
+/* เมื่อ canvas อยู่ใน fullscreen */
+:fullscreen #gameCanvas,
+:-webkit-full-screen #gameCanvas {
+  width: 100vw;
+  height: 100vh;
+  border: none;
+}
+
+.modal {
+  position: absolute;
+  top: 0;
+  left: 50%; /* กึ่งกลางแนวนอน */ 
+  transform: translateX(-50%); /* ดันกลับครึ่งหนึ่ง */
+  width: 355px;   /* เท่ากับ canvas */
+  height: 800px;  /* เท่ากับ canvas */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#gameCanvas {
+  position: relative;
+}
+
+
+.modal-content {
+  background: rgb(1, 44, 70);
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+  color: #fff;
+  font-family: 'Poppins', 'Comic Sans MS', 'Orbitron', sans-serif;
+
+  /* ใช้ box-shadow แทน border gradient */
+  box-shadow: 0 0 0 10px yellow, 0 0 0 20px orange;
+
+  margin-inline: 10px;
+
+  text-shadow: 0 0 5px #fff,
+               0 0 10px #ff0,
+               0 0 20px #f0f,
+               0 0 30px #0ff;
+}
+
+
+/* ปุ่ม OK */
+#startBtn {
+  background: green;
+  color: #fff;
+  border: none;
+  padding: 8px 20px;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+/* เอฟเฟคเด้งเมื่อ hover */
+#startBtn:hover {
+  background: limegreen;
+  transform: scale(1.1);
+}
+
+/* ปุ่ม Restart */
+#restartBtn {
+  background: green;
+  color: #fff;
+  border: none;
+  padding: 8px 20px;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+/* เอฟเฟคเด้งเมื่อ hover */
+#restartBtn:hover {
+  background: limegreen;
+  transform: scale(1.1);
+}
+
+
+.hidden {
+  display: none;
+}
