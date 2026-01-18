@@ -23,11 +23,12 @@ html, body {
   content: "";
   position: absolute;
   inset: 0;
-  background: url("assets/images/PlayX.png") no-repeat center center;
+  background: url("assets/images/PlayX.png") no-repeat left 10px top 10px; /* ✅ ชิดซ้าย + ห่างขอบบน 10px */
   background-size: 120px auto;
-  opacity: 0.5; /* ✅ ปรับความทึบเฉพาะรูป */
+  opacity: 1.0; /* ปรับความทึบเฉพาะรูป */
   pointer-events: none; /* ไม่บังการคลิก */
 }
+
 
 
 .site-header ul {
@@ -66,7 +67,7 @@ html, body {
 
   .site-header::before { 
     background-size: 80px auto; /* ✅ ลดขนาดโลโก้เท่านั้น */
-    background-position: center; /* โลโก้ชิดบนตรงกลาง */
+    
   } 
 
   .site-header ul {  
@@ -84,8 +85,6 @@ html, body {
     font-size: 0.55rem;          /* ✅ ย่อตัวหนังสือ */
   } 
 }
-
-
 
 canvas {
   display: block;
