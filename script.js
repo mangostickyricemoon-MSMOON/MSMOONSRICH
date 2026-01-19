@@ -73,18 +73,13 @@ const preloadImages = (paths) => {
   });
 };
 
-/* Jackpot */
-const jackpotImagePaths = [
-  "assets/images/LOGO.png",
-  "assets/images/SHIDO.png"
-];
-const jackpotImages = preloadImages(jackpotImagePaths);
-
 const playerImg = new Image();
 playerImg.src = "assets/images/MSMOON.png";
 let size = getPlayerSize();
-let player = { x: canvas.width - size.w, y: canvas.height - size.h, w:size.w, h:size.h, speed:20 };
+let player = { x: canvas.width - size.w, y: canvas.height - size.h, w:size.w, h:size.h, speed:15 };
 
+const jackpotImagePaths = ["assets/images/LOGO.png","assets/images/SHIDO.png"];
+const jackpotImages = preloadImages(jackpotImagePaths);
 const goodImagePaths = ["assets/images/good1.png","assets/images/good2.png","assets/images/good3.png"];
 const badImagePaths = ["assets/images/bad1.png","assets/images/bad2.png","assets/images/bad3.png"];
 const backgroundImg = new Image();
@@ -192,27 +187,28 @@ function startGame(){
 
 /* เงื่อไขเกมส์_________________________________________ */
 /* สร้างของตก */
-function spawnObject(){
+function spawnObject() {
   const { goodSize, badSize } = getObjectSizes();
-  const isJackpot = Math.random() < 0.05; // ✅ โอกาส 5% จะได้ Jackpot
+  const isJackpot = Math.random() < 0.05;
   const isGood = Math.random() < 0.5;
-  if(isJackpot){ 
-    const img = jackpotImages[Math.floor(Math.random()*jackpotImages.length)]; 
-    const points = (img.src.includes("LOGO.png")) ? 20 : 30; 
-    objects.push({ 
-      x: Math.random()*(canvas.width - goodSize), 
-      y: -goodSize, 
-      w: goodSize, 
-      h: goodSize, 
-      img: img, 
-      points: points, 
-      type: "jackpot" 
-    }); 
-  }
-  if(isGood){
-    const img = goodImages[Math.floor(Math.random()*goodImages.length)];
+
+  if (isJackpot) {
+    const pick = Math.floor(Math.random() * jackpotImages.length);
+    const img = jackpotImages[pick];
+    const points = (pick === 0) ? 20 : 30; // index 0 = LOGO, 1 = SHIDO
     objects.push({
-      x: Math.random()*(canvas.width - goodSize),
+      x: Math.random() * (canvas.width - goodSize),
+      y: -goodSize,
+      w: goodSize,
+      h: goodSize,
+      img: img,
+      points: points,
+      type: "jackpot"
+    });
+  } else if (isGood) {
+    const img = goodImages[Math.floor(Math.random() * goodImages.length)];
+    objects.push({
+      x: Math.random() * (canvas.width - goodSize),
       y: -goodSize,
       w: goodSize,
       h: goodSize,
@@ -221,9 +217,9 @@ function spawnObject(){
       type: "good"
     });
   } else {
-    const img = badImages[Math.floor(Math.random()*badImages.length)];
+    const img = badImages[Math.floor(Math.random() * badImages.length)];
     objects.push({
-      x: Math.random()*(canvas.width - badSize),
+      x: Math.random() * (canvas.width - badSize),
       y: -badSize,
       w: badSize,
       h: badSize,
@@ -233,6 +229,28 @@ function spawnObject(){
     });
   }
 }
+
+/* เอฟเฟคเหรียญกระจายเป็นวงกลม Jackpot */
+function spawnJackpotEffect(cx, cy){
+  const count = 24; // มากกว่า coin ปกติ
+  for(let i=0;i<count;i++){
+    const angle = (Math.PI*2 * i)/count;
+    const speed = 5 + Math.random()*3;
+    effects.push({
+      kind: "coin",
+      x: cx,
+      y: cy,
+      vx: Math.cos(angle)*speed,
+      vy: Math.sin(angle)*speed,
+      life: 40,   // อยู่บนจอนานกว่า
+      size: 28    // ใหญ่กว่า coin ปกติ
+    });
+  }
+
+  // ✅ เพิ่มข้อความ JACKPOT ใหญ่ ๆ สีทอง
+  spawnScoreText("JACKPOT!", cx, cy-20, "gold", 40);
+}
+
 
 
 /* เอฟเฟคเหรียญกระจายเป็นวงกลม */
@@ -324,19 +342,42 @@ function updateGame() {
       score += obj.points;
 
       // ✅ สร้างข้อความคะแนนตรงตำแหน่งที่ชน
+      let scoreText, scoreColor, scoreSize;
+
+      if (obj.type === "good") {
+        scoreText = `+${obj.points}`;
+        scoreColor = "lime";
+        scoreSize = 24;
+      } else if (obj.type === "jackpot") {
+        scoreText = `JACKPOT +${obj.points}`;
+        scoreColor = "gold";
+        scoreSize = 36; // ใหญ่กว่าปกติ
+      } else {
+        scoreText = `${obj.points}`; // เช่น -5
+        scoreColor = "#8B0000"; // DarkRed
+        scoreSize = 24;
+      }
+
       spawnScoreText(
-        obj.points > 0 ? `+${obj.points}` : `${obj.points}`,
+        scoreText,
         obj.x + obj.w / 2,
         obj.y,
-        obj.points > 0 ? "lime" : "red"
+        scoreColor,
+        scoreSize
       );
+
 
       // เอฟเฟคพิเศษ
       if (obj.type === "good") {
         spawnCoinBurst(obj.x, obj.y);
+      } else if (obj.type === "jackpot") {
+        // ให้ jackpot ใช้เอฟเฟคเหรียญ หรือทำเอฟเฟคพิเศษ
+        spawnJackpotEffect(obj.x, obj.y);
+        // หรือ spawnJackpotEffect(obj.x, obj.y);
       } else {
         spawnExplosion(obj.x, obj.y);
       }
+
 
       objects.splice(index, 1); // ลบ object ที่เก็บแล้ว
     }
@@ -447,11 +488,16 @@ function gameLoop(){
          o.points > 0 ? "lime" : "red" 
         );
 
-      if(o.type === "good"){
+      if (o.type === "good") {
         spawnCoinBurst(cx, cy);
+      } else if (o.type === "jackpot") {
+        // ให้ jackpot ใช้เอฟเฟคเหรียญ หรือทำเอฟเฟคพิเศษ
+        spawnJackpotEffect(cx, cy);
+        // หรือ spawnJackpotEffect(cx, cy);
       } else {
         spawnExplosion(cx, cy);
       }
+
 
       /* ลบวัตถุ */
       o.y = canvas.height + 999;
@@ -499,6 +545,26 @@ function gameLoop(){
     // ปิด shadow หลังวาดเสร็จ
     ctx.shadowBlur = 0;
 }
+
+    /* Controls: Mouse */
+    let isDragging = false;
+
+    canvas.addEventListener("mousedown", e => {
+      isDragging = true;
+    });
+
+    canvas.addEventListener("mousemove", e => {
+      if (isDragging) {
+        const rect = canvas.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        // ให้ player ตามตำแหน่งเมาส์ (ตรงกลาง)
+        player.x = Math.min(canvas.width - player.w, Math.max(0, mouseX - player.w / 2));
+      }
+    });
+
+    canvas.addEventListener("mouseup", e => {
+      isDragging = false;
+    });
 
 
     /* Controls: Keyboard */
