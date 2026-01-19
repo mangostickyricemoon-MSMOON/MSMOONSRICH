@@ -4,8 +4,8 @@ const fullscreenBtn = document.getElementById("fullscreenBtn");
 
 
 /* ล็อก canvas ไม่ให้ขยับ/เลื่อน */
-window.addEventListener("touchmove", e => e.preventDefault(), { passive: false });
-window.addEventListener("wheel", e => e.preventDefault(), { passive: false });
+canvas.addEventListener("touchmove", e => e.preventDefault(), { passive: false });
+canvas.addEventListener("wheel", e => e.preventDefault(), { passive: false });
 
 
 fullscreenBtn.addEventListener("click", () => {
@@ -46,6 +46,7 @@ let timeLeft = 60;
 let gameInterval, timerInterval;
 let objects = [];
 let effects = []; // เก็บเอฟเฟคเหรียญ/ระเบิด
+let isPaused = false; // สถานะ pause
 
 
 /* อ่านขนาด player จาก CSS variables */
@@ -134,39 +135,41 @@ playerNameInput.addEventListener("input", () => {
   console.log("ชื่อผู้เล่น:", playerName);
 });
 
-// Flow กดปุ่ม OK
-function startGameFlow() {
-  playerName = playerNameInput.value.trim() || "PLAYER";
-  if (welcomeModal) welcomeModal.classList.add("hidden");
-  startGame();
-}
+    // Flow กดปุ่ม OK
+    function startGameFlow() {
+      playerName = playerNameInput.value.trim() || "PLAYER";
+      if (welcomeModal) welcomeModal.classList.add("hidden");
+      startGame();
 
-// กดปุ่ม OK ด้วย mouse
-if (startBtn) startBtn.onclick = startGameFlow;
+      // เปิดใช้งาน blockExit หลังเริ่มเกม
+      enableExitBlock();
+    }
 
-// กด Enter จาก keyboard
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Enter" && welcomeModal && !welcomeModal.classList.contains("hidden")) {
-    startGameFlow();
-  }
-});
+    // กดปุ่ม OK ด้วย mouse
+    if (startBtn) startBtn.onclick = startGameFlow;
 
+    // กด Enter จาก keyboard
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" && welcomeModal && !welcomeModal.classList.contains("hidden")) {
+        startGameFlow();
+      }
+    });
 
+    function restartGameFlow() {
+      scoreModal.classList.add("hidden");
+      startGame();
+    }
 
-function restartGameFlow() {
-  scoreModal.classList.add("hidden");
-  startGame();
-}
+    // กดปุ่ม Restart ด้วย mouse
+    restartBtn.onclick = restartGameFlow;
 
-// กดปุ่ม Restart ด้วย mouse
-restartBtn.onclick = restartGameFlow;
+    // กด Enter จาก keyboard (ตอน modal score เปิดอยู่)
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" && !scoreModal.classList.contains("hidden")) {
+        restartGameFlow();
+      }
+    });
 
-// กด Enter จาก keyboard (ตอน modal score เปิดอยู่)
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Enter" && !finalScore.classList.contains("hidden")) {
-    restartGameFlow();
-  }
-});
 
 
 function startGame(){
@@ -184,6 +187,59 @@ function startGame(){
   },1000);
   gameInterval = setInterval(gameLoop, 30);
 }
+    // _______________________
+    // เปิดใช้งานการกันออกหลังเริ่มเกม
+    function enableExitBlock() {
+      // กัน back button
+      history.pushState(null, null, location.href);
+      window.addEventListener("popstate", function (event) {
+        document.getElementById("pauseModal").classList.remove("hidden");
+        isPaused = true; // ✅ หยุดเกมเมื่อ modal โผล่
+        history.pushState(null, null, location.href);
+      });
+
+      // กันการกดลิงก์ออกจากเกม
+      document.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", e => {
+          if (!link.classList.contains("game-link")) {
+            e.preventDefault();
+            document.getElementById("pauseModal").classList.remove("hidden");
+            isPaused = true; // ✅ หยุดเกมเมื่อ modal โผล่
+          }
+        });
+      });
+    }
+
+    // ปุ่ม Exit → ไปหน้า enter-name.html
+    document.getElementById("exitBtn").addEventListener("click", () => {
+      window.location.href = "enter-name.html";
+    });
+
+    // ปุ่ม Cancel → resume เล่นต่อ
+    document.getElementById("cancelBtn").addEventListener("click", () => {
+      document.getElementById("pauseModal").classList.add("hidden");
+      isPaused = false; // ✅ resume เกม
+      history.pushState(null, null, location.href);
+    });
+
+
+
+    // เริ่มเกมเมื่อกด Start
+    document.getElementById("startBtn").addEventListener("click", () => {
+      const name = document.getElementById("playerNameInput").value.trim();
+      if (name) {
+        playerName = name;
+        document.getElementById("welcomeModal").style.display = "none";
+
+        // ✅ เปิดใช้งาน blockExit หลังเริ่มเกม
+        enableExitBlock();
+
+        // เริ่ม gameLoop() ได้เลย
+        gameLoop();
+      }
+    });
+
+    
 
 /* เงื่อไขเกมส์_________________________________________ */
 /* สร้างของตก */
@@ -442,6 +498,7 @@ function drawEffects(ctx) {
 // ______________________________________________
 /* เกมลูป */
 function gameLoop(){
+  if (isPaused) return; // ถ้า pause → ไม่ทำงานต่อ
   ctx.clearRect(0,0,canvas.width,canvas.height);
   drawBackground();
 

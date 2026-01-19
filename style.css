@@ -3,7 +3,7 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  touch-action: none; /* ปิด gesture scroll บนมือถือ */
+  /* touch-action: none;  ปิด gesture scroll บนมือถือ */
   background: #000;
   font-family: Arial, sans-serif;
 
@@ -59,9 +59,60 @@ html, body {
 }
 
 .site-header a:hover {
-  color: yellow;
+  color: rgb(248, 248, 242);
   transform: scale(1.1);
 }
+
+/* Text Home, PlayX */
+ul li a {
+  font-size: 22px; /* ปรับขนาดตัวอักษร */
+  font-family: 'Poppins', sans-serif; /* ฟอนต์ทันสมัย */
+  font-weight: 600; /* ตัวหนาเล็กน้อย */
+  text-decoration: none; /* ตัดเส้นใต้ */
+  color: #333; /* สีตัวอักษร */
+}
+
+ul li a:hover {
+  color: #ff3ba7; /* เปลี่ยนสีเมื่อ hover */
+}
+
+
+/* pink Donate */
+.btn-pink {
+  display: inline-block;
+  padding: 10px 16px;
+  background:  linear-gradient(
+    90deg,
+    #C6425D 0%,
+    #E54C5D 25%,
+    #FC4558 50%,
+    #FC4060 75%,
+    #FC3C68 100%);         /* pink */
+  color: #ffffff;              /* white text */
+  border-radius: 10px;         /* rounded corners */
+  text-decoration: none;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 6px 14px rgba(255, 59, 167, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.btn-pink:hover {
+  background: #ff2a9a;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(255, 59, 167, 0.45);
+}
+
+.btn-pink:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 10px rgba(255, 59, 167, 0.3);
+}
+
+.btn-pink:focus {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
 
 
 /* จอเล็ก: ลดเฉพาะโลโก้ + ย่อตัวหนังสือ + เมนูแนวนอนชิดขวา */
@@ -88,7 +139,7 @@ html, body {
 
   .site-header a { 
     margin-right: 0;            
-    font-size: 0.55rem;          /* ✅ ย่อตัวหนังสือ */
+    font-size: 0.8rem;          /* ✅ ย่อตัวหนังสือ */
   } 
 }
 
@@ -176,6 +227,22 @@ canvas {
                0 0 30px #0ff;
 }
 
+
+
+.hidden {
+  display: none !important;
+}
+
+
+#exitBtn { 
+  background: #ff3b3b; 
+  color: #fff; 
+}
+
+#cancelBtn { 
+  background: #00c853; 
+  color: #fff; 
+}
 
 /* ปุ่ม OK */
 #startBtn {
