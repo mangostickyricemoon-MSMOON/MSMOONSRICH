@@ -212,7 +212,7 @@ function startGame(){
 
     // ปุ่ม Exit → ไปหน้า enter-name.html
     document.getElementById("exitBtn").addEventListener("click", () => {
-      window.location.href = "enter-name.html";
+      window.location.href = "https://s-rich.msmoon.net/";
     });
 
     // ปุ่ม Cancel → resume เล่นต่อ
