@@ -29,7 +29,7 @@ html, body {
   content: "";
   position: absolute;
   inset: 0;
-  background: url("assets/images/PlayX.png") no-repeat left 10px top 10px; /* ✅ ชิดซ้าย + ห่างขอบบน 10px */
+  background: url("assets/images/PlayX.png") no-repeat left 15px top 20px; /* ✅ ชิดซ้าย + ห่างขอบบน 10px */
   background-size: 120px auto;
   opacity: 1.0; /* ปรับความทึบเฉพาะรูป */
   pointer-events: none; /* ไม่บังการคลิก */
@@ -156,7 +156,7 @@ ul li a:hover {
   display: inline-block;
   padding: 10px 16px;
   background:  linear-gradient(
-    135 deg,
+    135deg,
     #C6425D 0%,
     #E54C5D 25%,
     #FC4558 50%,
@@ -322,16 +322,49 @@ canvas {
   display: none !important;
 }
 
-
-#exitBtn { 
-  background: #ff3b3b; 
-  color: #fff; 
+.btn-group {
+  display: flex;
+  justify-content: center;   /* จัดให้อยู่ตรงกลาง */
+  gap: 16px;                 /* ✅ ระยะห่างระหว่างปุ่ม */
+  margin-top: 12px;
 }
 
-#cancelBtn { 
-  background: #00c853; 
-  color: #fff; 
+.btn-exit {
+  background: linear-gradient(135deg, #ff4b4b, #d32f2f);
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(255, 0, 0, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
+.btn-exit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(255, 0, 0, 0.5);
+}
+
+.btn-resume {
+  background: linear-gradient(135deg, #00e676, #00c853);
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 200, 83, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-resume:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 200, 83, 0.5);
+}
+
 
 /* ปุ่ม OK */
 #startBtn {

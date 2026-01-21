@@ -246,7 +246,7 @@ function startGame(){
       window.addEventListener("popstate", function (event) {
         document.getElementById("pauseModal").classList.remove("hidden");
         isPaused = true;
-        pendingExitUrl = document.referrer || "/"; // ถ้า back → กลับไปหน้าก่อน
+        pendingExitUrl = "https://www.msmoon.net/mangoplayx";
         history.pushState(null, null, location.href);
       });
 
@@ -319,7 +319,7 @@ function startGame(){
           img: img,
           points: points,
           type: "jackpot",
-          speed: 3 + Math.random() * 3 // jackpot speed 3–6
+          speed: 4 + Math.random() * 3 // jackpot speed 3–6
         });
       } else if (isGood) {
         const img = goodImages[Math.floor(Math.random() * goodImages.length)];
@@ -331,7 +331,7 @@ function startGame(){
           img: img,
           points: 10,
           type: "good",
-          speed: toggleSpeed ? (2 + Math.random() * 2) : (6 + Math.random() * 2) // good speed 2–5
+          speed: toggleSpeed ? (4 + Math.random() * 2) : (6 + Math.random() * 2) // good speed 2–5
           // ถ้า toggleSpeed = true → good ช้า (2–4) 
           // // ถ้า toggleSpeed = false → good เร็ว (6–8)
         });
@@ -345,7 +345,7 @@ function startGame(){
           img: img,
           points: -5,
           type: "bad",
-          speed: toggleSpeed ? (6 + Math.random() * 2) : (2 + Math.random() * 2) // bad speed 4–8
+          speed: toggleSpeed ? (6 + Math.random() * 2) : (4 + Math.random() * 2) // bad speed 4–8
           // ถ้า toggleSpeed = true → bad เร็ว (6–8) 
           // // ถ้า toggleSpeed = false → bad ช้า (2–4)
         });
