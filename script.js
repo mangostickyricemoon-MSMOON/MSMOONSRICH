@@ -47,7 +47,9 @@ let gameInterval, timerInterval;
 let objects = [];
 let effects = []; // เก็บเอฟเฟคเหรียญ/ระเบิด
 let isPaused = false; // สถานะ pause
-
+let sizes = getObjectSizes();
+let toggleSpeed = true; // เริ่มต้นรอบแรก
+let pendingExitUrl = null; // ตัวแปรเก็บลิงก์ที่จะออก
 
 /* อ่านขนาด player จาก CSS variables */
 function getPlayerSize(){
@@ -64,6 +66,20 @@ function getObjectSizes(){
   const bw = parseInt(styles.getPropertyValue("--bad-size")) || 70;
   return { goodSize: gw, badSize: bw };
 }
+
+/* ความเร็ว Object */
+function createObject(type, x, y, size, image) {
+  return {
+    type: type,
+    x: x,
+    y: y,
+    size: size,
+    image: image,
+    // ✅ สุ่มความเร็วระหว่าง 2 ถึง 7
+    speed: 2 + Math.random() * 5
+  };
+}
+
 
 /* preload */
 const preloadImages = (paths) => {
@@ -139,10 +155,28 @@ playerNameInput.addEventListener("input", () => {
     function startGameFlow() {
       playerName = playerNameInput.value.trim() || "PLAYER";
       if (welcomeModal) welcomeModal.classList.add("hidden");
-      startGame();
 
-      // เปิดใช้งาน blockExit หลังเริ่มเกม
-      enableExitBlock();
+      // ✅ เริ่ม countdown 3 วิ
+      let countdownEl = document.getElementById("countdown");
+      let count = 3;
+      countdownEl.textContent = count;
+      countdownEl.classList.remove("hidden");
+
+      let countdownTimer = setInterval(() => {
+        count--;
+        if (count > 0) {
+          countdownEl.textContent = count;
+        } else {
+          clearInterval(countdownTimer);
+          countdownEl.classList.add("hidden");
+
+          // เริ่มเกมจริง
+          startGame();
+
+          // เปิดใช้งาน blockExit หลังเริ่มเกม
+          enableExitBlock();
+        }
+      }, 1000);
     }
 
     // กดปุ่ม OK ด้วย mouse
@@ -157,7 +191,23 @@ playerNameInput.addEventListener("input", () => {
 
     function restartGameFlow() {
       scoreModal.classList.add("hidden");
-      startGame();
+
+      // ✅ เริ่ม countdown ก่อน restart
+      let countdownEl = document.getElementById("countdown");
+      let count = 3;
+      countdownEl.textContent = count;
+      countdownEl.classList.remove("hidden");
+
+      let countdownTimer = setInterval(() => {
+        count--;
+        if (count > 0) {
+          countdownEl.textContent = count;
+        } else {
+          clearInterval(countdownTimer);
+          countdownEl.classList.add("hidden");
+          startGame();
+        }
+      }, 1000);
     }
 
     // กดปุ่ม Restart ด้วย mouse
@@ -169,6 +219,7 @@ playerNameInput.addEventListener("input", () => {
         restartGameFlow();
       }
     });
+
 
 
 
@@ -194,7 +245,8 @@ function startGame(){
       history.pushState(null, null, location.href);
       window.addEventListener("popstate", function (event) {
         document.getElementById("pauseModal").classList.remove("hidden");
-        isPaused = true; // ✅ หยุดเกมเมื่อ modal โผล่
+        isPaused = true;
+        pendingExitUrl = document.referrer || "/"; // ถ้า back → กลับไปหน้าก่อน
         history.pushState(null, null, location.href);
       });
 
@@ -204,23 +256,30 @@ function startGame(){
           if (!link.classList.contains("game-link")) {
             e.preventDefault();
             document.getElementById("pauseModal").classList.remove("hidden");
-            isPaused = true; // ✅ หยุดเกมเมื่อ modal โผล่
+            isPaused = true;
+            pendingExitUrl = link.href; // ✅ เก็บลิงก์ที่กดไว้
           }
         });
       });
     }
 
-    // ปุ่ม Exit → ไปหน้า enter-name.html
+    // ปุ่ม Exit → ไปตามลิงก์ที่กดก่อน
     document.getElementById("exitBtn").addEventListener("click", () => {
-      window.location.href = "https://s-rich.msmoon.net/";
+      if (pendingExitUrl) {
+        window.location.href = pendingExitUrl;
+      } else {
+        window.location.href = "/"; // fallback ถ้าไม่มีลิงก์
+      }
     });
 
     // ปุ่ม Cancel → resume เล่นต่อ
     document.getElementById("cancelBtn").addEventListener("click", () => {
       document.getElementById("pauseModal").classList.add("hidden");
-      isPaused = false; // ✅ resume เกม
+      isPaused = false;
       history.pushState(null, null, location.href);
+      pendingExitUrl = null; // เคลียร์ค่า
     });
+
 
 
 
@@ -241,50 +300,61 @@ function startGame(){
 
     
 
-/* เงื่อไขเกมส์_________________________________________ */
-/* สร้างของตก */
-function spawnObject() {
-  const { goodSize, badSize } = getObjectSizes();
-  const isJackpot = Math.random() < 0.05;
-  const isGood = Math.random() < 0.5;
+    /* เงื่อไขเกมส์_________________________________________ */
+    /* สร้างของตก */
+    function spawnObject() {
+      const { goodSize, badSize } = getObjectSizes();
+      const isJackpot = Math.random() < 0.05;
+      const isGood = Math.random() < 0.5;
 
-  if (isJackpot) {
-    const pick = Math.floor(Math.random() * jackpotImages.length);
-    const img = jackpotImages[pick];
-    const points = (pick === 0) ? 20 : 30; // index 0 = LOGO, 1 = SHIDO
-    objects.push({
-      x: Math.random() * (canvas.width - goodSize),
-      y: -goodSize,
-      w: goodSize,
-      h: goodSize,
-      img: img,
-      points: points,
-      type: "jackpot"
-    });
-  } else if (isGood) {
-    const img = goodImages[Math.floor(Math.random() * goodImages.length)];
-    objects.push({
-      x: Math.random() * (canvas.width - goodSize),
-      y: -goodSize,
-      w: goodSize,
-      h: goodSize,
-      img: img,
-      points: 10,
-      type: "good"
-    });
-  } else {
-    const img = badImages[Math.floor(Math.random() * badImages.length)];
-    objects.push({
-      x: Math.random() * (canvas.width - badSize),
-      y: -badSize,
-      w: badSize,
-      h: badSize,
-      img: img,
-      points: -5,
-      type: "bad"
-    });
-  }
-}
+      if (isJackpot) {
+        const pick = Math.floor(Math.random() * jackpotImages.length);
+        const img = jackpotImages[pick];
+        const points = (pick === 0) ? 20 : 30; // index 0 = LOGO, 1 = SHIDO
+        objects.push({
+          x: Math.random() * (canvas.width - goodSize),
+          y: -goodSize,
+          w: goodSize,
+          h: goodSize,
+          img: img,
+          points: points,
+          type: "jackpot",
+          speed: 3 + Math.random() * 3 // jackpot speed 3–6
+        });
+      } else if (isGood) {
+        const img = goodImages[Math.floor(Math.random() * goodImages.length)];
+        objects.push({
+          x: Math.random() * (canvas.width - goodSize),
+          y: -goodSize,
+          w: goodSize,
+          h: goodSize,
+          img: img,
+          points: 10,
+          type: "good",
+          speed: toggleSpeed ? (2 + Math.random() * 2) : (6 + Math.random() * 2) // good speed 2–5
+          // ถ้า toggleSpeed = true → good ช้า (2–4) 
+          // // ถ้า toggleSpeed = false → good เร็ว (6–8)
+        });
+      } else {
+        const img = badImages[Math.floor(Math.random() * badImages.length)];
+        objects.push({
+          x: Math.random() * (canvas.width - badSize),
+          y: -badSize,
+          w: badSize,
+          h: badSize,
+          img: img,
+          points: -5,
+          type: "bad",
+          speed: toggleSpeed ? (6 + Math.random() * 2) : (2 + Math.random() * 2) // bad speed 4–8
+          // ถ้า toggleSpeed = true → bad เร็ว (6–8) 
+          // // ถ้า toggleSpeed = false → bad ช้า (2–4)
+        });
+      }
+      // ✅ สลับสถานะทุกครั้งที่ spawn 
+      toggleSpeed = !toggleSpeed;
+    }
+
+
 
 /* เอฟเฟคเหรียญกระจายเป็นวงกลม Jackpot */
 function spawnJackpotEffect(cx, cy){
@@ -520,13 +590,14 @@ function gameLoop(){
 
   /* อัปเดตและวาดของตก */
   objects.forEach(o=>{
-    o.y += 4;
+    o.y += o.speed;
     if(o.img.complete && o.img.naturalWidth > 0){
       ctx.drawImage(o.img,o.x,o.y,o.w,o.h);
     } else {
       ctx.fillStyle = (o.type === "good") ? "lime" : "red";
       ctx.fillRect(o.x,o.y,o.w,o.h);
     }
+    
 
     /* ตรวจชนกับ player */
     const collide = (o.y+o.h>player.y) && (o.x<player.x+player.w) && (o.x+o.w>player.x);

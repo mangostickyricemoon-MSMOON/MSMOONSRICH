@@ -76,13 +76,87 @@ ul li a:hover {
   color: #ff3ba7; /* เปลี่ยนสีเมื่อ hover */
 }
 
+/* Btn home */
+.btn-home {
+  display: inline-block;
+  padding: 10px 16px;
+  background: linear-gradient(
+    90deg,
+    rgba(198, 66, 93, 0) 0%,   /* โปร่งแสง 100% */
+    rgba(229, 76, 93, 0) 25%,
+    rgba(252, 69, 88, 0) 50%,
+    rgba(252, 64, 96, 0) 75%,
+    rgba(252, 60, 104, 0) 100%
+  );
+  color: rgba(255, 255, 255, 0.85);   /* ข้อความขาวโปร่งแสง */
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 6px 14px rgba(255, 59, 167, 0.25); /* เงาโปร่งแสง */
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.btn-home:hover {
+  background: rgba(255, 42, 154, 0.6); /* hover โปร่งแสง */
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(255, 59, 167, 0.35);
+}
+
+.btn-home:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 10px rgba(255, 59, 167, 0.2);
+}
+
+.btn-home:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.7);
+  outline-offset: 2px;
+}
+
+/* Btn playx */
+.btn-playx {
+  display: inline-block;
+  padding: 10px 16px;
+  background: linear-gradient(
+    90deg,
+    rgba(198, 66, 93, 0) 0%,   /* โปร่งแสง 100% */
+    rgba(229, 76, 93, 0) 25%,
+    rgba(252, 69, 88, 0) 50%,
+    rgba(252, 64, 96, 0) 75%,
+    rgba(252, 60, 104, 0) 100%
+  );
+  color: rgba(255, 255, 255, 0.85);   /* ข้อความขาวโปร่งแสง */
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 6px 14px rgba(255, 59, 167, 0.25); /* เงาโปร่งแสง */
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.btn-playx:hover {
+  background: rgba(255, 42, 154, 0.6); /* hover โปร่งแสง */
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(255, 59, 167, 0.35);
+}
+
+.btn-playx:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 10px rgba(255, 59, 167, 0.2);
+}
+
+.btn-playx:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.7);
+  outline-offset: 2px;
+}
+
 
 /* pink Donate */
-.btn-pink {
+.btn-donate {
   display: inline-block;
   padding: 10px 16px;
   background:  linear-gradient(
-    90deg,
+    135 deg,
     #C6425D 0%,
     #E54C5D 25%,
     #FC4558 50%,
@@ -97,18 +171,18 @@ ul li a:hover {
   transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
 }
 
-.btn-pink:hover {
+.btn-donate:hover {
   background: #ff2a9a;
   transform: translateY(-1px);
   box-shadow: 0 8px 18px rgba(255, 59, 167, 0.45);
 }
 
-.btn-pink:active {
+.btn-donate:active {
   transform: translateY(0);
   box-shadow: 0 4px 10px rgba(255, 59, 167, 0.3);
 }
 
-.btn-pink:focus {
+.btn-donate:focus {
   outline: 2px solid #ffffff;
   outline-offset: 2px;
 }
@@ -157,6 +231,22 @@ canvas {
   height: auto;
   border: 1px solid #ccc;
 }
+
+/* countdown */
+#countdown {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 120px;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 0 20px #ff0, 0 0 40px #f0f, 0 0 60px #0ff;
+}
+.hidden {
+  display: none;
+}
+
 
 /* Control bar */
 .control-bar {
@@ -226,7 +316,6 @@ canvas {
                0 0 20px #f0f,
                0 0 30px #0ff;
 }
-
 
 
 .hidden {
