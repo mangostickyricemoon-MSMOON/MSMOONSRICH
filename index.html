@@ -1,27 +1,26 @@
 <!DOCTYPE html>
 <html lang="th">
-<header class="site-header">
-  <nav>
-    <ul>
-      <li><a class="btn-home" href="https://www.msmoon.net">MSMoon</a></li>
-      <li><a class="btn-playx" href="https://www.msmoon.net/mangoplayx">MangoPlayX</a></li>
-      <li><a class="btn-donate" href="https://donate.msmoon.net">Donate</a></li>
-    </ul>
-  </nav>
-</header>
-
 <head>
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
   <meta charset="UTF-8">
   <title>MSMOON'S RICH</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  
+  <!-- Header ต้องอยู่ใน body -->
+  <header class="site-header">
+    <nav>
+      <ul>
+        <li><a class="btn-home" href="https://www.msmoon.net">MSMoon</a></li>
+        <li><a class="btn-playx" href="https://www.msmoon.net/mangoplayx">MangoPlayX</a></li>
+        <li><a class="btn-donate" href="https://donate.msmoon.net">Donate</a></li>
+      </ul>
+    </nav>
+  </header>
+
   <!-- Canvas -->
-  <!-- เลือกขนาด player ด้วย class: player-small | player-medium | player-large -->
   <canvas id="gameCanvas" class="player-medium" width="480" height="800"></canvas>
 
   <!-- Modal Welcome -->
@@ -41,7 +40,6 @@
     <button id="fullscreenBtn">Fullscreen</button>
   </div>
 
-
   <!-- Modal Score -->
   <div id="scoreModal" class="modal hidden">
     <div class="modal-content">
@@ -51,20 +49,16 @@
     </div>
   </div>
 
-
   <!-- Modal Exit -->
-<div id="pauseModal" class="modal hidden">
-  <div class="modal-content">
-    <p>Do you want to exit the game?</p>
-    <div class="btn-group">
-      <button id="exitBtn" class="btn-exit">Exit</button>
-      <button id="cancelBtn" class="btn-resume">Resume</button>
+  <div id="pauseModal" class="modal hidden">
+    <div class="modal-content">
+      <p>Do you want to exit the game?</p>
+      <div class="btn-group">
+        <button id="exitBtn" class="btn-exit">Exit</button>
+        <button id="cancelBtn" class="btn-resume">Resume</button>
+      </div>
     </div>
   </div>
-</div>
-
-
-
 
   <script src="script.js"></script>
 </body>
