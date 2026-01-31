@@ -1,0 +1,15 @@
+/* ✅ Canvas Responsive */
+.canvas-player-medium {
+  display: block;
+  margin: 0 auto;
+  border: 1px solid #ccc;
+
+  /* ให้ขนาดยืดหยุ่น */
+  max-width: 100%;       /* ไม่เกินความกว้างของหน้าจอ */
+  height: auto;          /* ปรับความสูงตามสัดส่วน */
+  aspect-ratio: 4 / 5;   /* รักษาสัดส่วน 480:600 */
+
+  /* พื้นหลัง fallback */
+  background: url("../assets/images/background.png") no-repeat center center;
+  background-size: cover;
+}

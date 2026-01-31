@@ -1,0 +1,20 @@
+/* ✅ Countdown */
+.countdown-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  font-size: 120px;          /* ✅ ใส่หน่วย px ให้ครบ */
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 
+    0 0 20px #ff0,
+    0 0 40px #f0f,
+    0 0 60px #0ff;
+  z-index: 9999;             /* ✅ ให้อยู่บนสุด */
+}
+
+.hidden {
+  display: none !important;  /* ✅ ใช้ซ่อน countdown */
+}
+

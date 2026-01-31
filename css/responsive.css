@@ -1,0 +1,94 @@
+/* 📱 มือถือเล็ก */
+@media (max-width: 480px) {
+.header-container {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .site-header ul {
+    flex-direction: row;
+    gap: 8px;
+    margin-top: 0;
+    flex-wrap: nowrap;       /* ❌ ไม่ให้ wrap */
+    overflow: hidden;        /* ✅ ป้องกันล้น */
+  }
+
+  .site-header li {
+    flex-shrink: 0;          /* ✅ ย่อขนาดได้ */
+    min-width: 0;            /* ✅ ให้ย่อจนสุด */
+  }
+
+  .site-header a {
+    display: block;
+    font-size: clamp(1rem, 3vw, 1rem); /* ✅ ย่อ font ตามขนาดจอ */
+    padding: 5px 8px;
+    text-align: center;
+    white-space: nowrap;     /* ✅ ไม่ตัดบรรทัด */
+    overflow: hidden;
+    text-overflow: ellipsis; /* ✅ ถ้ายาวเกินจะใส่ ... */
+  }
+}
+
+
+
+/* 📱 มือถือทั่วไป */
+@media (max-width: 600px) {
+  .header-container {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .site-header ul {
+    flex-direction: row;
+    gap: 8px;
+    margin-top: 0;
+    flex-wrap: nowrap;       /* ❌ ไม่ให้ wrap */
+    overflow: hidden;        /* ✅ ป้องกันล้น */
+  }
+
+  .site-header li {
+    flex-shrink: 0;          /* ✅ ย่อขนาดได้ */
+    min-width: 0;            /* ✅ ให้ย่อจนสุด */
+  }
+
+  .site-header a {
+    display: block;
+    font-size: clamp(0.7rem, 2.5vw, 0.9rem); /* ✅ ย่อ font ตามขนาดจอ */
+    padding: 5px 8px;
+    text-align: center;
+    white-space: nowrap;     /* ✅ ไม่ตัดบรรทัด */
+    overflow: hidden;
+    text-overflow: ellipsis; /* ✅ ถ้ายาวเกินจะใส่ ... */
+  }
+}
+
+/* 💻 Tablet */
+@media (max-width: 900px) {
+  .site-header a {
+    font-size: 0.9rem;
+  }
+
+  .countdown-overlay {
+    font-size: 80px;
+  }
+}
+
+/* 🖥 Desktop */
+@media (min-width: 1024px) {  
+    .canvas-player-medium {
+    width: 480px;
+    height: 800px;
+  }
+
+  .modal-content-welcome,
+  .modal-content-score,
+  .modal-content-exit {
+    max-width: 400px;
+  }
+
+  .countdown-overlay {
+    font-size: 120px;
+  }
+}

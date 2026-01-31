@@ -1,0 +1,10 @@
+/* ✅ Banner */
+.banner-img {
+  display: block;          /* ทำให้ img เป็น block element */
+  margin: 0 auto;          /* จัดให้อยู่กึ่งกลางแนวนอน */
+  width: 100%;             /* ให้กว้างเต็มเท่ากับ canvas */
+  max-width: 480px;        /* จำกัดไม่ให้เกินขนาด canvas (ถ้า canvas มี max-width 480px) */
+  height: auto;
+  max-height: 250px;
+  object-fit: cover;
+}

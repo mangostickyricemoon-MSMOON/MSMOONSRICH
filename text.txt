@@ -1,0 +1,19 @@
+project/
+│
+├─ index.html
+├─ css/
+│   ├─ base.css        // reset, layout, body, font
+│   ├─ header.css      // header, logo, nav menu
+│   ├─ banner.css      // banner image
+│   ├─ canvas.css      // canvas styling
+│   ├─ controls.css    // control bar, fullscreen button
+│   ├─ modals.css      // welcome, score, exit modals
+│   ├─ countdown.css   // countdown overlay
+│   └─ responsive.css  // media queries (mobile, tablet, desktop)
+└─ js/
+    ├─ main.js → Flow และ modal
+    ├─ player.js → Player และ controls
+    ├─ objects.js → วัตถุที่ตกลงมา
+    ├─ effects.js → เอฟเฟคภาพ/ข้อความ
+    ├─ gameLoop.js → ลูปหลักและ HUD
+   

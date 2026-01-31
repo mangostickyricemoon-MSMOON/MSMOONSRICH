@@ -1,0 +1,101 @@
+/* ✅ Header */
+.site-header {
+  background: linear-gradient(90deg,#ff7a00,#ffb300,#ffd800,#b6ff00,#38a700);
+  padding: 4px 10px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.logo img {
+  height: 30px;
+  width: auto;
+}
+
+.site-header ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 15px;
+}
+
+.site-header a {
+  font-size: 1rem;
+  text-decoration: none;
+  color: #020000;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 6px;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.site-header a:hover {
+  background: rgba(255,255,255,0.2);
+  transform: translateY(-2px);
+}
+
+/* ✅ ปุ่ม Home และ PlayX */
+.btn-home,
+.btn-playx {
+  display: inline-block;
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.85);
+  border-radius: 24px;
+  text-decoration: none;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  transition: transform 0.2s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-home:hover,
+.btn-playx:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+}
+
+/* ✅ ปุ่ม Donate */
+.btn-donate {
+  display: inline-block;
+  padding: 10px 16px;
+  background: linear-gradient(
+    135deg,
+    #C6425D 0%,
+    #E54C5D 25%,
+    #FC4558 50%,
+    #FC4060 75%,
+    #FC3C68 100%
+  );
+  color: #ffffff;
+  border-radius: 24px;
+  text-decoration: none;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 6px 14px rgba(255, 59, 167, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.btn-donate:hover {
+  background: #ff2a9a;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(255, 59, 167, 0.45);
+}
+
+.btn-donate:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 10px rgba(255, 59, 167, 0.3);
+}
+
+.btn-donate:focus {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}

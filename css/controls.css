@@ -1,0 +1,24 @@
+/* ✅ Control bar */
+.control-bar {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  padding: 8px;
+  background: #a8a6a6;
+  box-sizing: border-box;
+}
+.btn-fullscreen {
+  flex: 1;
+  padding: 10px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  background: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
+.btn-fullscreen:hover {
+  background: #0056b3;
+}
