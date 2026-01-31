@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>MSMOON'S RICH</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <link rel="icon" type="image/x-icon" href="favicon.png">
+
+  <!-- ✅ CSS -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/banner.css">
+  <link rel="stylesheet" href="css/canvas.css">
+  <link rel="stylesheet" href="css/controls.css">
+  <link rel="stylesheet" href="css/modals.css">
+  <link rel="stylesheet" href="css/countdown.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <div class="logo">
+        <img src="assets/images/PlayX.png" alt="PlayX Logo">
+      </div>
+      <nav>
+        <ul>
+          <li><a class="btn-home" href="https://www.msmoon.net">MSMoon</a></li>
+          <li><a class="btn-playx" href="https://mangoplayx.msmoon.net">MangoPlayX</a></li>
+          <li><a class="btn-donate" href="https://donate.msmoon.net">Donate</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Banner -->
+  <div class="banner">
+    <img src="assets/images/banner.jpg" alt="Site Banner" class="banner-img" />
+  </div>
+
+  <!-- Canvas -->
+  <canvas id="gameCanvas" class="canvas-player-medium" width="480" height="600"></canvas>
+
+  <!-- Modal Welcome -->
+  <div id="welcomeModal" class="modal-welcome">
+    <div class="modal-content-welcome">
+      <h2>WELCOME TO MSMOON'S RICH</h2>
+      <input type="text" id="playerNameInput" maxlength="12" placeholder="Name (12 characters max)">
+      <button id="startBtn" class="btn-start">OK</button>
+    </div>
+  </div>
+
+  <!-- Countdown Overlay -->
+  <div id="countdown" class="countdown-overlay hidden"></div>
+
+  <!-- Control bar -->
+  <div class="control-bar">
+    <button id="fullscreenBtn" class="btn-fullscreen">Fullscreen</button>
+  </div>
+
+  <!-- Modal Score -->
+  <div id="scoreModal" class="modal-score">
+    <div class="modal-content-score">
+      <h2>FINISHED!</h2>
+      <p id="finalScore"></p>
+      <button id="restartBtn" class="btn-restart">Play Again</button>
+    </div>
+  </div>
+
+  <!-- Modal Exit -->
+  <div id="pauseModal" class="modal-exit">
+    <div class="modal-content-exit">
+      <p>Do you want to exit the game?</p>
+      <div class="btn-group-exit">
+        <button id="exitBtn" class="btn-exit">Exit</button>
+        <button id="cancelBtn" class="btn-resume">Resume</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ Scripts -->
+  <script src="js/main.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/objects.js"></script>
+  <script src="js/effects.js"></script>
+  <script src="js/gameLoop.js"></script>
+</body>
+</html>
