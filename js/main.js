@@ -2,9 +2,9 @@ const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 const fullscreenBtn = document.getElementById("fullscreenBtn");
 
-// ✅ กำหนดขนาด canvas ปกติ (480x600)
+// ✅ กำหนดขนาด canvas ปกติ (480x800)
 canvas.width = 480;
-canvas.height = 600;
+canvas.height = 800;
 
 let playerName = "";
 let score = 0;
